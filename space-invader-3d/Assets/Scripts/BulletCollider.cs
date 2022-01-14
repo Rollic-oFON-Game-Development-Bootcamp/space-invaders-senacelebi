@@ -25,6 +25,7 @@ public class BulletCollider : MonoBehaviour
             if (other.gameObject.name == "Player")
             {
                 Destroy(gameObject);
+                Score.Instance.totalHealth -= 1;
             }
         }
         
