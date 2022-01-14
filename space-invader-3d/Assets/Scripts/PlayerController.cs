@@ -9,7 +9,10 @@ public class PlayerController : MonoBehaviour
 
     public Rigidbody bullet;
 
-   
+    float time = 0;
+    public float fireInterval;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -20,20 +23,30 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+        time = time + Time.deltaTime;
+
         float newX = 0;
         float touchX = 0;
+
+        if (time > fireInterval)
+        {
+            Rigidbody spawnBullet = Instantiate(bullet, transform.position, Quaternion.identity);
+            spawnBullet.AddForce(Vector3.forward * 500);
+            time = 0;
+        }
+       
+
         if(Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
         {
             touchX = Input.GetTouch(0).deltaPosition.x / Screen.width;
-            Rigidbody spawnBullet = Instantiate(bullet, transform.position, Quaternion.identity);
-            spawnBullet.AddForce(Vector3.forward * 500);
+            
 
         }
         else if(Input.GetMouseButton(0))
         {
             touchX = Input.GetAxis("Mouse X");
-            Rigidbody spawnBullet = Instantiate(bullet, transform.position, Quaternion.identity);
-            spawnBullet.AddForce(Vector3.forward * 500);
+           
         }
 
         newX = transform.position.x + speedX * touchX * Time.deltaTime;
